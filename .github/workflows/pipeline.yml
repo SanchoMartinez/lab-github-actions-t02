@@ -1,11 +1,11 @@
+name: Pipeline DevOps
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch:        # permite ejecutar desde la UI de GitHub
-name: Pipeline DevOps
-
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
       - name: Simular build
         run: echo "Construyendo la aplicación..."
 
-test:
+  test:
     name: Test
     runs-on: ubuntu-latest
     needs: build
@@ -30,7 +30,6 @@ test:
         run: |
           echo "Ejecutando tests..."
           exit 1
-
 
   deploy:
     name: Deploy
