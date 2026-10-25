@@ -8,11 +8,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
-    name: Build & Push Docker Image
+  build:
+    name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Build imagen (verificación local)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+
+  push:
+    name: Push Imagen Docker
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout codigo
         uses: actions/checkout@v4
 
       - name: Login a Docker Hub
@@ -21,7 +35,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build y push imagen
+      - name: Push imagen
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -33,7 +47,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    needs: build-and-push
+    needs: push
     steps:
       - name: Simular tests
         run: echo "Tests pendientes — se implementan en el siguiente paso"
