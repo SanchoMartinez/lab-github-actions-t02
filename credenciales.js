@@ -1,1 +1,0 @@
-const awskey = "AKIAIOSFODNN7ABCDEFG";
